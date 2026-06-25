@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>פרסונות ומערכות — היום ומחר · אקוסיסטם האחזקה</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EAEEF3; --paper-2:#FFFFFF; --paper-3:#F4F6F9;
+    --ink:#0E1C2B; --ink-soft:#3E4F61; --muted:#76879A; --line:#D6DEE7;
+    --navy-deep:#091420; --navy-panel:#0F2231; --navy-card:#163041; --navy-line:#27475c;
+    --accent:#36B7A8; --accent-2:#D49233;
+    /* system hues — muted categorical */
+    --sys-serial:#C08A3E; --sys-checkit:#3F74AD; --sys-followit:#2F9488;
+    --sys-weekly:#4895A6; --sys-submit:#7A66A6; --sys-gofix:#B85751;
+    --maxw:1120px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:"Heebo",system-ui,sans-serif; font-weight:400; line-height:1.6;
+    font-size:17px; letter-spacing:-0.005em;
+  }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px}
+  h1,h2,h3{margin:0; text-wrap:balance; line-height:1.12}
+  .serif{font-family:"Frank Ruhl Libre",serif}
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace; font-size:12.5px; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--accent); font-weight:500;
+  }
+  p{margin:0}
+  .mono{font-family:"IBM Plex Mono",monospace}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative; overflow:hidden; color:#EAF1F6;
+    background:
+      radial-gradient(140% 90% at 88% -10%, #1c4256 0%, rgba(28,66,86,0) 55%),
+      linear-gradient(180deg,#0c1c2a 0%, var(--navy-deep) 100%);
+  }
+  .hero::before{ /* sonar rings */
+    content:""; position:absolute; inset:0; pointer-events:none; opacity:.5;
+    background:
+      radial-gradient(circle at 88% 6%, transparent 0 88px, rgba(54,183,168,.10) 89px 90px, transparent 91px 200px),
+      radial-gradient(circle at 88% 6%, transparent 0 168px, rgba(54,183,168,.08) 169px 170px, transparent 171px 300px),
+      radial-gradient(circle at 88% 6%, transparent 0 258px, rgba(54,183,168,.06) 259px 260px, transparent 261px 400px);
+  }
+  .hero .wrap{position:relative; padding-top:62px; padding-bottom:60px}
+  .hero h1{
+    font-family:"Frank Ruhl Libre",serif; font-weight:900;
+    font-size:clamp(38px,6.2vw,68px); margin:18px 0 0; letter-spacing:-0.01em;
+  }
+  .hero .lead{
+    max-width:62ch; margin-top:22px; font-size:clamp(17px,1.7vw,20px);
+    color:#B8C8D4; font-weight:300; line-height:1.66;
+  }
+  .hero .lead strong{color:#EAF1F6; font-weight:600}
+  .stats{display:flex; flex-wrap:wrap; gap:10px; margin-top:30px}
+  .stat{
+    border:1px solid var(--navy-line); background:rgba(255,255,255,.03);
+    border-radius:999px; padding:8px 16px; font-size:13.5px; color:#C6D5DF;
+  }
+  .stat b{color:var(--accent); font-family:"IBM Plex Mono",monospace; font-weight:500}
+
+  /* ---------- SECTION SHELL ---------- */
+  section{padding:64px 0}
+  .sec-head{margin-bottom:34px; max-width:64ch}
+  .sec-head h2{font-size:clamp(26px,3.4vw,38px); font-weight:800; margin-top:10px; letter-spacing:-0.02em}
+  .sec-head p{color:var(--ink-soft); margin-top:14px; font-size:17px}
+
+  /* ---------- SYSTEMS LEGEND ---------- */
+  .systems{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
+  .sys{
+    background:var(--paper-2); border:1px solid var(--line); border-radius:14px;
+    padding:18px 18px 18px 20px; position:relative;
+    border-inline-start:4px solid var(--c);
+  }
+  .sys .name{display:flex; align-items:baseline; gap:8px}
+  .sys .en{font-family:"IBM Plex Mono",monospace; font-weight:500; font-size:17px; color:var(--c)}
+  .sys .world{font-size:12.5px; color:var(--muted); font-weight:500}
+  .sys .role{margin-top:8px; font-size:14.5px; color:var(--ink-soft); line-height:1.55}
+
+  /* ---------- PERSONAS ---------- */
+  .tier{margin-top:30px}
+  .tier:first-child{margin-top:0}
+  .tier-label{
+    display:flex; align-items:center; gap:12px; margin-bottom:16px;
+    font-family:"IBM Plex Mono",monospace; font-size:12.5px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--muted); font-weight:500;
+  }
+  .tier-label::after{content:""; flex:1; height:1px; background:var(--line)}
+  .pcards{display:grid; grid-template-columns:repeat(4,1fr); gap:16px}
+  .pcard{
+    background:var(--paper-2); border:1px solid var(--line); border-radius:14px;
+    padding:20px; display:flex; flex-direction:column; gap:10px;
+  }
+  .pcard h3{font-size:18px; font-weight:700}
+  .pcard .desc{font-size:14px; color:var(--ink-soft); line-height:1.55; flex:1}
+  .chips{display:flex; flex-wrap:wrap; gap:6px}
+  .chip{
+    font-family:"IBM Plex Mono",monospace; font-size:11.5px; font-weight:500;
+    padding:3px 9px; border-radius:999px; color:#fff; line-height:1.4;
+  }
+
+  /* ---------- TODAY MATRIX ---------- */
+  .panel{background:var(--paper-2); border:1px solid var(--line); border-radius:18px; overflow:hidden}
+  .tbl-scroll{overflow-x:auto}
+  table.matrix{border-collapse:collapse; width:100%; min-width:760px; font-size:14px}
+  table.matrix th, table.matrix td{text-align:start; padding:14px 14px; vertical-align:top}
+  table.matrix thead th{
+    position:sticky; top:0; background:var(--paper-3); border-bottom:1px solid var(--line);
+    font-family:"IBM Plex Mono",monospace; font-weight:500; font-size:13px; white-space:nowrap;
+  }
+  table.matrix thead th.persona-h{color:var(--muted)}
+  table.matrix tbody tr+tr td{border-top:1px solid var(--line)}
+  table.matrix td.persona{font-weight:600; font-size:14.5px; white-space:nowrap; color:var(--ink)}
+  table.matrix td.persona span{display:block; font-weight:400; font-size:12px; color:var(--muted); font-family:"Heebo"}
+  .cell{display:flex; align-items:center; gap:7px; color:var(--ink-soft); font-size:12.5px; line-height:1.35}
+  .dot{width:10px; height:10px; border-radius:50%; flex:0 0 auto; background:var(--cc)}
+  .dot.ring{background:transparent; border:2px solid var(--cc)}
+  .empty{color:#C3CCD6; font-size:14px}
+  .legend{display:flex; flex-wrap:wrap; gap:18px; padding:14px 18px; background:var(--paper-3); border-top:1px solid var(--line); font-size:12.5px; color:var(--muted)}
+  .legend span{display:inline-flex; align-items:center; gap:7px}
+  .pain{
+    margin-top:18px; display:flex; gap:14px; align-items:flex-start;
+    background:#FBEDEC; border:1px solid #ECC9C6; border-radius:14px; padding:16px 18px;
+  }
+  .pain .bar{width:4px; align-self:stretch; border-radius:3px; background:var(--sys-gofix)}
+  .pain p{font-size:14.5px; color:#7d3a36; line-height:1.6}
+  .pain strong{color:#5e2723}
+
+  /* ---------- FUTURE (dark) ---------- */
+  .future{background:linear-gradient(180deg,#0c1c2a,var(--navy-deep)); color:#E7EFF4}
+  .future .sec-head h2{color:#fff}
+  .future .sec-head p{color:#A9BCC9}
+  .future .eyebrow{color:var(--accent)}
+  .arch{display:grid; grid-template-columns:1fr 300px; gap:22px; align-items:stretch}
+  .platform{
+    border:1px solid var(--navy-line); border-radius:20px; padding:22px;
+    background:
+      radial-gradient(120% 100% at 100% 0%, rgba(54,183,168,.10), transparent 60%),
+      var(--navy-panel);
+    position:relative;
+  }
+  .platform .ptitle{display:flex; align-items:center; gap:10px; margin-bottom:4px}
+  .platform .ptitle h3{font-size:20px; font-weight:700; color:#fff}
+  .platform .ptag{font-size:13px; color:#9fb4c2; margin-bottom:18px}
+  .modules{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px}
+  .mod{
+    border:1px solid var(--navy-line); border-radius:11px; padding:12px 12px;
+    background:var(--navy-card); border-top:3px solid var(--c);
+  }
+  .mod .en{font-family:"IBM Plex Mono",monospace; font-weight:500; font-size:14px; color:#E7EFF4}
+  .mod .ml{font-size:11.5px; color:#90a6b4; margin-top:3px}
+  .surfaces{display:grid; gap:10px}
+  .surface{
+    border-radius:13px; padding:14px 16px; display:flex; align-items:center; gap:12px;
+    border:1px solid transparent;
+  }
+  .surface .s-ico{
+    width:34px; height:34px; border-radius:9px; flex:0 0 auto; display:grid; place-items:center;
+    font-family:"IBM Plex Mono",monospace; font-weight:500; font-size:15px;
+  }
+  .surface .s-txt b{display:block; font-size:14.5px; font-weight:600}
+  .surface .s-txt span{font-size:12.5px; color:#9fb4c2}
+  .surface.exec{background:linear-gradient(100deg,rgba(54,183,168,.18),rgba(54,183,168,.06)); border-color:rgba(54,183,168,.4)}
+  .surface.exec .s-ico{background:var(--accent); color:#06251f}
+  .surface.exec b{color:#caf3ec}
+  .surface.over{background:rgba(255,255,255,.04); border-color:var(--navy-line)}
+  .surface.over .s-ico{background:#2a4a5d; color:#cfe5ef}
+  .surface.over b{color:#e7eff4}
+
+  /* serial side box + connector */
+  .serial-col{display:flex; flex-direction:column; align-items:stretch}
+  .connector{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; padding:6px 0}
+  .connector .lbl{
+    font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.04em;
+    color:var(--accent-2); text-align:center; background:rgba(212,146,51,.10);
+    border:1px solid rgba(212,146,51,.35); border-radius:999px; padding:5px 11px;
+  }
+  .serial-box{
+    flex:1; border:1px dashed rgba(212,146,51,.55); border-radius:20px; padding:20px;
+    background:radial-gradient(120% 100% at 0% 0%, rgba(212,146,51,.12), transparent 60%), var(--navy-panel);
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .serial-box .stitle{display:flex; align-items:baseline; gap:8px}
+  .serial-box .en{font-family:"IBM Plex Mono",monospace; font-weight:500; font-size:18px; color:var(--accent-2)}
+  .serial-box .world{font-size:12px; color:#9fb4c2}
+  .serial-box .role{font-size:13.5px; color:#bcccd7; line-height:1.55}
+  .serial-box .tagline{
+    margin-top:auto; font-size:12px; color:var(--accent-2); font-weight:600;
+    border-top:1px solid var(--navy-line); padding-top:12px;
+  }
+
+  .access{margin-top:22px; display:grid; grid-template-columns:repeat(2,1fr); gap:14px}
+  .acc{display:flex; gap:12px; align-items:flex-start; background:rgba(255,255,255,.03); border:1px solid var(--navy-line); border-radius:13px; padding:15px 16px}
+  .acc .a-dot{width:9px; height:9px; border-radius:50%; margin-top:7px; flex:0 0 auto; background:var(--accent)}
+  .acc h4{margin:0 0 3px; font-size:15px; font-weight:700; color:#fff}
+  .acc p{font-size:13px; color:#A9BCC9; line-height:1.55}
+
+  /* ---------- RECOMMENDATION ---------- */
+  .rec-tbl{width:100%; border-collapse:collapse; font-size:15px}
+  .rec-tbl th,.rec-tbl td{text-align:start; padding:15px 16px; vertical-align:top}
+  .rec-tbl thead th{font-family:"IBM Plex Mono",monospace; font-size:12.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); border-bottom:1px solid var(--line); font-weight:500}
+  .rec-tbl tbody tr+tr td{border-top:1px solid var(--line)}
+  .rec-tbl .sys-cell{font-family:"IBM Plex Mono",monospace; font-weight:500; white-space:nowrap; color:var(--c)}
+  .verdict{display:inline-block; font-size:12.5px; font-weight:700; padding:4px 11px; border-radius:999px; white-space:nowrap}
+  .verdict.unify{background:#E3F3F0; color:#1c6b60}
+  .verdict.keep{background:#F8ECD8; color:#8a5b16}
+  .rec-tbl td.why{color:var(--ink-soft); font-size:14px; line-height:1.55}
+
+  .callout{
+    margin-top:26px; display:grid; grid-template-columns:auto 1fr; gap:18px; align-items:start;
+    background:linear-gradient(120deg,#0f2231,#163041); color:#E7EFF4;
+    border:1px solid var(--navy-line); border-radius:18px; padding:24px 26px;
+  }
+  .callout .k{font-family:"Frank Ruhl Libre",serif; font-weight:900; font-size:42px; color:var(--accent); line-height:1}
+  .callout h3{font-size:20px; font-weight:700; color:#fff; margin-bottom:8px}
+  .callout p{font-size:15px; color:#B8C8D4; line-height:1.65; max-width:70ch}
+  .callout p strong{color:#fff; font-weight:600}
+
+  footer{padding:34px 0 50px; color:var(--muted); font-size:13px; border-top:1px solid var(--line)}
+  footer .wrap{display:flex; flex-wrap:wrap; gap:8px 18px; justify-content:space-between}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:900px){
+    .systems{grid-template-columns:repeat(2,1fr)}
+    .pcards{grid-template-columns:repeat(2,1fr)}
+    .arch{grid-template-columns:1fr}
+    .modules{grid-template-columns:repeat(2,1fr)}
+    .access{grid-template-columns:1fr}
+    .connector{flex-direction:row; padding:10px 0}
+  }
+  @media (max-width:560px){
+    body{font-size:16px}
+    .systems,.pcards,.access{grid-template-columns:1fr}
+    .modules{grid-template-columns:repeat(2,1fr)}
+    .callout{grid-template-columns:1fr}
+  }
+
+  /* ---------- motion ---------- */
+  .reveal{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease}
+  .reveal.in{opacity:1; transform:none}
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1; transform:none; transition:none}
+  }
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">אקוסיסטם האחזקה והכשירות · חיל הים / מספנה</div>
+    <h1>מי נוגע במה —<br>היום, ומחר</h1>
+    <p class="lead">
+      שש מערכות, שישה עולמות, וקבוצת פרסונות שעוברת ביניהן. המסמך ממפה את הפרסונות
+      ואת האינטראקציות הקיימות — ומציע כיצד לאחד אותן:
+      <strong>הכל תחת מטריה אחת, למעט סריאל.</strong>
+    </p>
+    <div class="stats">
+      <div class="stat"><b>6</b> עולמות</div>
+      <div class="stat"><b>6</b> מערכות</div>
+      <div class="stat"><b>9</b> פרסונות</div>
+      <div class="stat">מ‑<b>פרגמנטציה</b> ל‑<b>מטריה מאוחדת</b></div>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== SYSTEMS ===================== -->
+<section>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">המערכות</div>
+      <h2>ששת העולמות והמערכות שמנהלות אותם</h2>
+      <p>כל מערכת חיה בעולם משלה. הצבעים כאן מלווים כל מערכת לאורך כל המסמך.</p>
+    </div>
+    <div class="systems">
+      <div class="sys reveal" style="--c:var(--sys-serial)">
+        <div class="name"><span class="en">Serial</span><span class="world">עולם הציודים · WMS</span></div>
+        <div class="role">האב של כל הציוד: מה קיים, איפה, ובאיזה סטטוס (תקין / לא תקין / פסול). פעולות בסיסיות וציוד כבד (מנועים) בתדירויות שאינן קלנדריות.</div>
+      </div>
+      <div class="sys reveal" style="--c:var(--sys-checkit)">
+        <div class="name"><span class="en">CheckIT</span><span class="world">עולם האחזקה · הגדרה</span></div>
+        <div class="role">מגדיר אילו טיפולים נדרשים — הוראות אחזקה וסבב אישורים. התוצר: הוראה מאושרת שנגזרת לטיפולים.</div>
+      </div>
+      <div class="sys reveal" style="--c:var(--sys-followit)">
+        <div class="name"><span class="en">FollowIT</span><span class="world">עולם האחזקה · מעקב</span></div>
+        <div class="role">מוודא שהטיפולים אכן מתבצעים — Execution tracking. קלנדרי בלבד, עם רמזורים ומסך מנהלים.</div>
+      </div>
+      <div class="sys reveal" style="--c:var(--sys-weekly)">
+        <div class="name"><span class="en">Weekly</span><span class="world">עולם המספנה</span></div>
+        <div class="role">טיפול ברמה גבוהה: מעלים כלי למספנה ושם מבוצע הטיפול. מוטרג — קורה רק אם הכלי עלה למספנה.</div>
+      </div>
+      <div class="sys reveal" style="--c:var(--sys-submit)">
+        <div class="name"><span class="en">Submit</span><span class="world">עולם הבחינה</span></div>
+        <div class="role">בחינות שמתבצעות במספנה — מפרטי בחינה וליקויי צוות. הבחינה מתבצעת לצד הטיפול.</div>
+      </div>
+      <div class="sys reveal" style="--c:var(--sys-gofix)">
+        <div class="name"><span class="en">GoFix</span><span class="world">עולם התקלות וההפעלות</span></div>
+        <div class="role">פתיחת תקלות (כמו פתיחת באג) והפעלות (DoIt). תהליך רציף ומתמשך, לא מחזורי.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PERSONAS ===================== -->
+<section style="background:var(--paper-3); border-block:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">הפרסונות</div>
+      <h2>תשע פרסונות בשלוש שכבות</h2>
+      <p>מי שמבצע בקצה, מי שכותב ומאפיין, ומי שמנהל ובוקר מלמעלה.</p>
+    </div>
+
+    <div class="tier reveal">
+      <div class="tier-label">שטח · ביצוע</div>
+      <div class="pcards">
+        <div class="pcard">
+          <h3>איש צוות / טכנאי</h3>
+          <p class="desc">מבצע טיפולים, פותח תקלות ומסמן ביצוע על ציוד. נמצא בכל בסיס — המשתמש הנפוץ ביותר בקצה.</p>
+          <div class="chips">
+            <span class="chip" style="background:var(--sys-followit)">FollowIT</span>
+            <span class="chip" style="background:var(--sys-gofix)">GoFix</span>
+            <span class="chip" style="background:var(--sys-serial)">Serial</span>
+          </div>
+        </div>
+        <div class="pcard">
+          <h3>מטפל ציוד</h3>
+          <p class="desc">מאתר ציוד ספציפי (איפה המנוע שצריך לקחת), מבצע את הטיפול ומסמן שבוצע — לפי הוראת CheckIT.</p>
+          <div class="chips"><span class="chip" style="background:var(--sys-serial)">Serial</span></div>
+        </div>
+        <div class="pcard">
+          <h3>מבצע מספנה</h3>
+          <p class="desc">מבצע בפועל את הטיפול ברמת מספנה, וגם טיפולים שאינם רמתיים דרך מעקב הטיפולים.</p>
+          <div class="chips">
+            <span class="chip" style="background:var(--sys-weekly)">Weekly</span>
+            <span class="chip" style="background:var(--sys-followit)">FollowIT</span>
+          </div>
+        </div>
+        <div class="pcard">
+          <h3>בוחן</h3>
+          <p class="desc">מבצע את הבחינות לפי מפרטי הבחינה. ליקוי שנמצא נפתח כתקלה ומקושר הלאה.</p>
+          <div class="chips"><span class="chip" style="background:var(--sys-submit)">Submit</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tier reveal">
+      <div class="tier-label">כתיבה ואפיון</div>
+      <div class="pcards">
+        <div class="pcard">
+          <h3>כותב ומאשר הוראות (קפ"ט)</h3>
+          <p class="desc">כותב את הוראות האחזקה ומנהל את סבב האישורים. ההוראה המאושרת נגזרת אוטומטית לטיפולים ב‑FollowIT.</p>
+          <div class="chips">
+            <span class="chip" style="background:var(--sys-checkit)">CheckIT</span>
+            <span class="chip" style="background:var(--sys-followit)">FollowIT</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tier reveal">
+      <div class="tier-label">ניהול ובקרה</div>
+      <div class="pcards">
+        <div class="pcard">
+          <h3>מנהל ביצוע (מספנה / בחינה)</h3>
+          <p class="desc">מנהל את האנשים שמבצעים את הטיפול והבחינה, ומוודא שהעבודה במספנה זורמת.</p>
+          <div class="chips">
+            <span class="chip" style="background:var(--sys-weekly)">Weekly</span>
+            <span class="chip" style="background:var(--sys-submit)">Submit</span>
+          </div>
+        </div>
+        <div class="pcard">
+          <h3>מפקד בסיס / מנהל כלים</h3>
+          <p class="desc">צופה במסך המנהלים: כשירות האחזקה ותקלות של הכלים שבאחריותו — לרוחב כל הכלים שהוא מנהל.</p>
+          <div class="chips">
+            <span class="chip" style="background:var(--sys-followit)">FollowIT</span>
+            <span class="chip" style="background:var(--sys-gofix)">GoFix</span>
+          </div>
+        </div>
+        <div class="pcard">
+          <h3>קצין ציוד בכיר</h3>
+          <p class="desc">כמה ציוד יש מכל סוג, היכן הוא ומה הסטטוס שלו — תמונת מלאי וכשירות ציוד.</p>
+          <div class="chips"><span class="chip" style="background:var(--sys-serial)">Serial</span></div>
+        </div>
+        <div class="pcard">
+          <h3>מאכ"י · בקרת‑על</h3>
+          <p class="desc">רואה את כל העולמות — תמונת כשירות כוללת חוצת‑מערכות. יכול להיכנס לכל אחת מהמערכות.</p>
+          <div class="chips">
+            <span class="chip" style="background:var(--ink-soft)">כל המערכות</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TODAY ===================== -->
+<section>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">היום · המצב הקיים</div>
+      <h2>כל פרסונה רצה בין מסכים נפרדים</h2>
+      <p>טבלת האינטראקציות: מי נוגע באיזו מערכת, ובאיזה תפקיד. שימו לב לשורות שמתפזרות על פני כמה עמודות.</p>
+    </div>
+
+    <div class="panel reveal">
+      <div class="tbl-scroll">
+        <table class="matrix">
+          <thead>
+            <tr>
+              <th class="persona-h">פרסונה</th>
+              <th style="color:var(--sys-serial)">Serial</th>
+              <th style="color:var(--sys-checkit)">CheckIT</th>
+              <th style="color:var(--sys-followit)">FollowIT</th>
+              <th style="color:var(--sys-weekly)">Weekly</th>
+              <th style="color:var(--sys-submit)">Submit</th>
+              <th style="color:var(--sys-gofix)">GoFix</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="persona">איש צוות / טכנאי<span>שטח · ביצוע</span></td>
+              <td><div class="cell" style="--cc:var(--sys-serial)"><span class="dot ring"></span>מסמן ביצוע</div></td>
+              <td><div class="empty">—</div></td>
+              <td><div class="cell" style="--cc:var(--sys-followit)"><span class="dot"></span>מבצע טיפול</div></td>
+              <td><div class="empty">—</div></td>
+              <td><div class="empty">—</div></td>
+              <td><div class="cell" style="--cc:var(--sys-gofix)"><span class="dot"></span>פותח תקלה</div></td>
+            </tr>
+            <tr>
+              <td class="persona">מטפל ציוד<span>שטח · ביצוע</span></td>
+              <td><div class="cell" style="--cc:var(--sys-serial)"><span class="dot"></span>מאתר ומסמן</div></td>
+              <td><div class="empty">—</div></td>
+              <td><div class="empty">—</div></td>
+              <td><div class="empty">—</div></td>
+              <td><div class="empty">—</div></td>
+              <td><div class="empty">—</div></td>
+            </tr>
+            <tr>
+              <td class="persona">מבצע מספנה<span>שטח · ביצוע</span></td>
+              <td><div class="empty">—</div></td>
+              <td><div class="empty">—</div></td>
+              <td><div class="cell" style="--cc:var(--sys-followit)"><span class="dot ring"></span>לא‑רמתי</div></td>
+              <td><div class="cell" style="--cc:var(--sys-weekly)"><span class="dot"></span>מבצע טיפול</div></td>
+              <td><div class="empty">—</div></td>
+              <td><div class="empty">—</div></td>
+            </tr>
+            <tr>
+              <td class="persona">בוחן<span>שטח · ביצוע</span></td>
+              <td><div class="empty">—</div></td>
+              <td><div class="empty">—</div></td>
+              <td><div class="empty">—</div></td>
+              <td><div class="empty">—</div></td>
+              <td><div class="cell" style="--cc:var(--sys-submit)"><span class="dot"></span>מבצע בחינה</div></td>
+              <td><div class="cell" style="--cc:var(--sys-gofix)"><span class="dot ring"></span>ליקוי→תקלה</div></td>
+            </tr>
+            <tr>
+              <td class="persona">קפ"ט · כותב הוראות<span>כתיבה ואפיון</span></td>
+              <td><div class="empty">—</div></td>
+              <td><div class="cell" style="--cc:var(--sys-checkit)"><span class="dot"></span>כותב ומאשר</div></td>
+              <td><div class="cell" style="--cc:var(--sys-followit)"><span class="dot ring"></span>נגזר אוטומטית</div></td>
+              <td><div class="empty">—</div></td>
+              <td><div class="empty">—</div></td>
+              <td><div class="empty">—</div></td>
+            </tr>
+            <tr>
+              <td class="persona">מנהל ביצוע<span>ניהול ובקרה</span></td>
+              <td><div class="empty">—</div></td>
+              <td><div class="empty">—</div></td>
+              <td><div class="empty">—</div></td>
+              <td><div class="cell" style="--cc:var(--sys-weekly)"><span class="dot"></span>מנהל מבצעים</div></td>
+              <td><div class="cell" style="--cc:var(--sys-submit)"><span class="dot"></span>מנהל בחינה</div></td>
+              <td><div class="empty">—</div></td>
+            </tr>
+            <tr>
+              <td class="persona">מפקד בסיס / מנהל כלים<span>ניהול ובקרה</span></td>
+              <td><div class="empty">—</div></td>
+              <td><div class="empty">—</div></td>
+              <td><div class="cell" style="--cc:var(--sys-followit)"><span class="dot"></span>מסך מנהלים</div></td>
+              <td><div class="empty">—</div></td>
+              <td><div class="empty">—</div></td>
+              <td><div class="cell" style="--cc:var(--sys-gofix)"><span class="dot"></span>בקרת תקלות</div></td>
+            </tr>
+            <tr>
+              <td class="persona">קצין ציוד בכיר<span>ניהול ובקרה</span></td>
+              <td><div class="cell" style="--cc:var(--sys-serial)"><span class="dot"></span>מלאי וסטטוס</div></td>
+              <td><div class="empty">—</div></td>
+              <td><div class="empty">—</div></td>
+              <td><div class="empty">—</div></td>
+              <td><div class="empty">—</div></td>
+              <td><div class="empty">—</div></td>
+            </tr>
+            <tr>
+              <td class="persona">מאכ"י · בקרת‑על<span>ניהול ובקרה</span></td>
+              <td><div class="cell" style="--cc:var(--sys-serial)"><span class="dot"></span>צופה</div></td>
+              <td><div class="cell" style="--cc:var(--sys-checkit)"><span class="dot"></span>צופה</div></td>
+              <td><div class="cell" style="--cc:var(--sys-followit)"><span class="dot"></span>כשירות</div></td>
+              <td><div class="cell" style="--cc:var(--sys-weekly)"><span class="dot"></span>צופה</div></td>
+              <td><div class="cell" style="--cc:var(--sys-submit)"><span class="dot"></span>צופה</div></td>
+              <td><div class="cell" style="--cc:var(--sys-gofix)"><span class="dot"></span>צופה</div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="legend">
+        <span><span class="dot" style="--cc:var(--ink-soft)"></span> אינטראקציה ישירה</span>
+        <span><span class="dot ring" style="--cc:var(--ink-soft)"></span> עקיף / חלקי</span>
+        <span>— ללא נגיעה</span>
+      </div>
+    </div>
+
+    <div class="pain reveal">
+      <div class="bar"></div>
+      <p><strong>הכאב:</strong> אותו איש צוות בקצה נדרש לעבור בין FollowIT (טיפולים), GoFix (תקלות) ו‑Serial (ציוד) — שלושה מסכים נפרדים, כפילויות בתוכן, ובלבול בשטח. אין מסך אחד שמרכז את מחזור הטיפולים השלם של כלי השיט, וגם המפקדים נדרשים לאסוף תמונה ממספר מערכות.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FUTURE ===================== -->
+<section class="future">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">מחר · הפתרון המוצע</div>
+      <h2>מטריה אחת — למעט סריאל</h2>
+      <p>מאחדים את <em>החוויה</em> ואת <em>מודל הנתונים</em>: פלטפורמת אחזקה וכשירות עם מסך ביצוע אחד בקצה ומסך כשירות מאוחד למעלה. סריאל נשאר נפרד — ומחובר בממשק.</p>
+    </div>
+
+    <div class="arch reveal">
+      <!-- the unified platform -->
+      <div class="platform">
+        <div class="ptitle"><h3>פלטפורמת אחזקה וכשירות מאוחדת</h3></div>
+        <div class="ptag">מודולים מחוברים · קומפוננטות גנריות מבוססות‑הרשאות · חוזי‑נתונים משותפים</div>
+        <div class="modules">
+          <div class="mod" style="--c:var(--sys-checkit)"><div class="en">CheckIT</div><div class="ml">אפיון הוראות</div></div>
+          <div class="mod" style="--c:var(--sys-followit)"><div class="en">FollowIT</div><div class="ml">מעקב ביצוע</div></div>
+          <div class="mod" style="--c:var(--sys-weekly)"><div class="en">Weekly</div><div class="ml">מספנה</div></div>
+          <div class="mod" style="--c:var(--sys-submit)"><div class="en">Submit</div><div class="ml">בחינה</div></div>
+          <div class="mod" style="--c:var(--sys-gofix)"><div class="en">GoFix</div><div class="ml">תקלות</div></div>
+          <div class="mod" style="--c:#5d8a55"><div class="en">DoIt</div><div class="ml">הפעלות</div></div>
+        </div>
+        <div class="surfaces">
+          <div class="surface exec">
+            <div class="s-ico">▦</div>
+            <div class="s-txt"><b>מסך מטלות אחד · לקצה</b><span>אחזקה · הפעלה · תקלה · בחינה — הכל במקום אחד</span></div>
+          </div>
+          <div class="surface over">
+            <div class="s-ico">◑</div>
+            <div class="s-txt"><b>מסך כשירות מאוחד · לבקרה</b><span>תמונת כשירות חוצת‑מודולים למפקדים ולמאכ"י</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- serial, separate but connected -->
+      <div class="serial-col">
+        <div class="connector">
+          <div class="lbl">אינטגרציה ↔<br>שאיבת הוראות מ‑CheckIT · סטטוס ציוד</div>
+        </div>
+        <div class="serial-box">
+          <div class="stitle"><span class="en">Serial</span><span class="world">WMS · נפרד</span></div>
+          <div class="role">נשאר מערכת עצמאית: האב של כל הציוד — מה קיים, איפה, ובאיזה סטטוס. מטפל בציוד כבד ובתדירויות שאינן קלנדריות.</div>
+          <div class="tagline">שואב הוראות אחזקה מ‑CheckIT · מספק סטטוס ציוד לפלטפורמה</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="access">
+      <div class="acc reveal"><span class="a-dot"></span><div><h4>קצה — צוות, מבצע מספנה, בוחן</h4><p>מסך מטלות אחד: טיפול, הפעלה, תקלה ובחינה מאוחדים. אין יותר קפיצה בין מערכות.</p></div></div>
+      <div class="acc reveal"><span class="a-dot"></span><div><h4>קפ"ט — אפיון</h4><p>כותב ב‑CheckIT, וההוראה מזינה את כל הפלטפורמה — כולל Weekly וסריאל.</p></div></div>
+      <div class="acc reveal"><span class="a-dot"></span><div><h4>מפקד בסיס / מאכ"י — בקרה</h4><p>מסך כשירות מאוחד מעל כל המודולים, במקום איסוף ידני ממערכות נפרדות.</p></div></div>
+      <div class="acc reveal"><span class="a-dot"></span><div><h4>מטפל ציוד / קצין ציוד</h4><p>ממשיכים ב‑Serial — מערכת נפרדת, מחוברת בממשק לפלטפורמה.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== RECOMMENDATION ===================== -->
+<section>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">ההמלצה · האם ואיך לאחד</div>
+      <h2>מאחדים חמש, משאירים אחת מחוברת</h2>
+      <p>החלטה לכל מערכת — מה נכנס למטריה, ומה נשאר נפרד עם אינטגרציה.</p>
+    </div>
+
+    <div class="panel reveal" style="padding:8px 8px">
+      <table class="rec-tbl">
+        <thead>
+          <tr><th>מערכת</th><th>החלטה</th><th>נימוק</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="sys-cell" style="--c:var(--sys-checkit)">CheckIT</td>
+            <td><span class="verdict unify">ליבת הפלטפורמה</span></td>
+            <td class="why">מגדיר את כל הטיפולים — עמוד השדרה של מחזור האחזקה.</td>
+          </tr>
+          <tr>
+            <td class="sys-cell" style="--c:var(--sys-followit)">FollowIT</td>
+            <td><span class="verdict unify">ליבת הפלטפורמה</span></td>
+            <td class="why">מעקב הביצוע, צמוד ל‑CheckIT (קלנדרי). יחד הם הליבה.</td>
+          </tr>
+          <tr>
+            <td class="sys-cell" style="--c:var(--sys-weekly)">Weekly</td>
+            <td><span class="verdict unify">מודול במטריה</span></td>
+            <td class="why">המספנה מבצעת לפי סעיפי CheckIT (יעדים) — אותו מודל נתונים בדיוק.</td>
+          </tr>
+          <tr>
+            <td class="sys-cell" style="--c:var(--sys-submit)">Submit</td>
+            <td><span class="verdict unify">מודול במטריה</span></td>
+            <td class="why">בחינה מוטרגת במספנה, מקושרת לתקלות. שייכת לאותו מחזור.</td>
+          </tr>
+          <tr>
+            <td class="sys-cell" style="--c:var(--sys-gofix)">GoFix <span style="color:var(--muted)">+ DoIt</span></td>
+            <td><span class="verdict unify">מסך מטלות אחד</span></td>
+            <td class="why">תהליך רציף בקצה — מקור הבלבול הגדול ביותר בשטח. מאוחד למסך אחד.</td>
+          </tr>
+          <tr>
+            <td class="sys-cell" style="--c:var(--sys-serial)">Serial <span style="color:var(--muted)">WMS</span></td>
+            <td><span class="verdict keep">נפרד + אינטגרציה</span></td>
+            <td class="why">דומיין שונה (ניהול מחסנים), פרסונות שונות, מבוזר. שואב מ‑CheckIT ומספק סטטוס ציוד.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout reveal">
+      <div class="k">≠</div>
+      <div>
+        <h3>מטריה אינה מונוליט</h3>
+        <p>ההמלצה מאחדת את <strong>החוויה ואת מודל הנתונים</strong> — לא בהכרח גוף‑תוכנה מונוליטי אחד. הפלטפורמה נפרסת לפי בסיס (בדיוק כפי ש‑FollowIT מבוזר היום), עם קומפוננטות גנריות מבוססות‑הרשאות וחוזי‑נתונים משותפים. כך נשמרת המציאות המבוזרת — ונעלמת הפרגמנטציה. זה גם עונה לחשש של הרע"ן: <strong>לא מערבבים תכנים — מחברים תהליכים.</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>אקוסיסטם האחזקה והכשירות · CheckIT · FollowIT · Serial · Weekly · Submit · GoFix</span>
+    <span class="mono">AI‑Brain / knowledge-base · עודכן 2026‑06‑25</span>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var els = document.querySelectorAll('.reveal');
+    if(!('IntersectionObserver' in window)){ els.forEach(function(e){e.classList.add('in')}); return; }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, {threshold:0.12});
+    els.forEach(function(e){ io.observe(e); });
+  })();
+</script>
+
+</body>
+</html>
