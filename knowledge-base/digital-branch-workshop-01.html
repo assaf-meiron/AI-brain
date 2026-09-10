@@ -1,0 +1,1149 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>סדנת ענף דיגיטל</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;900&family=Assistant:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  color-scheme: dark;
+  --abyss:#050B12;
+  --deep:#08131F;
+  --hull:#0D1E2E;
+  --hull-2:#112838;
+  --steel:#1B3548;
+  --steel-2:#27506B;
+  --fog:#93A9BC;
+  --fog-dim:#5E7488;
+  --mist:#DCE8F0;
+  --brass:#D3A94A;
+  --brass-dim:#7E6528;
+  --signal:#4FB8C9;
+  --signal-dim:#255F6C;
+  --alert:#D9603C;
+
+  --ff-display:"Frank Ruhl Libre", "Times New Roman", serif;
+  --ff-body:"Assistant", "Segoe UI", system-ui, sans-serif;
+  --ff-mono:"IBM Plex Mono", ui-monospace, monospace;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--abyss);
+  color:var(--mist);
+  font-family:var(--ff-body);
+  overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- deck shell ---------- */
+.deck{
+  position:fixed; inset:0;
+  display:grid; place-items:center;
+  background:
+    radial-gradient(120% 90% at 50% 0%, #0A1926 0%, var(--abyss) 62%),
+    var(--abyss);
+}
+.stage{
+  position:relative;
+  width:min(100vw, calc(100vh * 16 / 9));
+  height:min(100vh, calc(100vw * 9 / 16));
+  container:stage / size;
+  overflow:hidden;
+  background:linear-gradient(180deg, #071522 0%, #050C14 58%, #04090F 100%);
+}
+.slides, .chrome{ --u:1cqw }
+.slides{ position:absolute; inset:0 }
+
+.slide{
+  position:absolute; inset:0;
+  padding-block:calc(4.4*var(--u));
+  padding-inline:calc(5.2*var(--u));
+  opacity:0; visibility:hidden;
+  transition:opacity .5s ease, visibility .5s;
+}
+.slide.active{ opacity:1; visibility:visible }
+
+/* ---------- shared type ---------- */
+.eyebrow, .meta, #s3 .s3-head .count{ margin:0 }
+.eyebrow{
+  font-family:var(--ff-mono);
+  font-size:calc(1.02*var(--u));
+  letter-spacing:.06em;
+  color:var(--signal);
+  text-transform:uppercase;
+  display:flex; align-items:center; gap:calc(.9*var(--u));
+}
+.eyebrow::before{
+  content:""; inline-size:calc(3.2*var(--u)); block-size:1px;
+  background:linear-gradient(to left, var(--signal), transparent);
+}
+h1{
+  margin:0;
+  font-family:var(--ff-display); font-weight:900;
+  font-size:calc(6.1*var(--u)); line-height:1.03;
+  letter-spacing:-.005em; text-wrap:balance;
+  color:var(--mist);
+}
+h2{
+  margin:0;
+  font-family:var(--ff-display); font-weight:700;
+  font-size:calc(3.5*var(--u)); line-height:1.12; text-wrap:balance;
+}
+.lede{
+  margin:0; font-size:calc(1.72*var(--u)); line-height:1.5;
+  color:var(--fog); font-weight:300; max-inline-size:46ch;
+}
+.meta{
+  font-family:var(--ff-mono); font-size:calc(1.02*var(--u));
+  color:var(--fog-dim); letter-spacing:.04em;
+}
+
+/* ---------- slide 1 ---------- */
+#s1{ padding:0 }
+#s1 .scene{ position:absolute; inset:0; width:100%; height:100% }
+#s1 .titleblock{
+  position:absolute;
+  inset-block-start:calc(10*var(--u));
+  inset-inline-start:calc(5.6*var(--u));
+  display:flex; flex-direction:column; gap:calc(2.05*var(--u));
+  max-inline-size:calc(57*var(--u));
+}
+#s1 h1{ font-size:calc(6.2*var(--u)); text-wrap:nowrap }
+.rule{
+  block-size:2px; inline-size:calc(17*var(--u));
+  background:linear-gradient(to left, var(--brass) 0%, var(--brass-dim) 70%, transparent 100%);
+  transform-origin:right center;
+}
+#s1 .sub{
+  margin:0; font-family:var(--ff-display); font-weight:400;
+  font-size:calc(2.5*var(--u)); line-height:1.3; color:#B9CDDC;
+}
+#s1 .stamp{
+  display:flex; gap:calc(1.6*var(--u)); align-items:baseline;
+  font-family:var(--ff-mono); font-size:calc(1.12*var(--u));
+  letter-spacing:.03em; color:var(--fog-dim);
+}
+#s1 .stamp b{ color:var(--brass); font-weight:500 }
+
+/* entrance */
+.rise{ animation:rise .82s cubic-bezier(.2,.85,.25,1) both }
+@keyframes rise{ from{opacity:0; transform:translateY(calc(1.6*var(--u)))} to{opacity:1; transform:none} }
+.draw{ animation:draw .9s cubic-bezier(.2,.85,.25,1) both }
+@keyframes draw{ from{transform:scaleX(0)} to{transform:scaleX(1)} }
+.slide-in{ animation:slidein 1.25s cubic-bezier(.19,.86,.22,1) both }
+@keyframes slidein{ from{opacity:0; transform:translateX(calc(6*var(--u)))} to{opacity:1; transform:none} }
+
+/* ambient scene motion */
+.wave{ animation:drift linear infinite }
+@keyframes drift{ from{transform:translateX(0)} to{transform:translateX(-160px)} }
+.pulse-arc{ animation:pulseout 4.2s ease-out infinite; transform-box:view-box }
+@keyframes pulseout{ 0%{opacity:.55; transform:scale(.25)} 70%{opacity:0} 100%{opacity:0; transform:scale(1.5)} }
+.sonar{ animation:sonarout 5s ease-out infinite; transform-box:view-box }
+@keyframes sonarout{ 0%{opacity:.4; transform:scale(.15)} 75%{opacity:0} 100%{opacity:0; transform:scale(1.35)} }
+
+/* ---------- agenda ---------- */
+#sag{ display:grid; grid-template-rows:auto 1fr; gap:calc(2*var(--u)) }
+#sag .titles{ display:flex; flex-direction:column; gap:calc(1*var(--u)) }
+.agenda{ align-self:center; display:flex; flex-direction:column; inline-size:100% }
+.ag{
+  display:grid; grid-template-columns:auto 1fr auto; align-items:baseline;
+  gap:calc(2*var(--u));
+  padding-block:calc(1.1*var(--u));
+  border-block-start:1px solid var(--steel);
+}
+.ag:last-child{ border-block-end:1px solid var(--steel) }
+.ag .n{ font-family:var(--ff-mono); font-size:calc(1.5*var(--u)); color:var(--signal); letter-spacing:.1em }
+.ag h3{ margin:0; font-family:var(--ff-display); font-weight:700; font-size:calc(2.35*var(--u)); line-height:1.14; color:var(--mist) }
+.ag p{ margin:calc(.35*var(--u)) 0 0; font-size:calc(1.38*var(--u)); line-height:1.42; color:var(--fog); font-weight:300 }
+.ag .tag{
+  align-self:center; white-space:nowrap;
+  font-family:var(--ff-mono); font-size:calc(.95*var(--u)); letter-spacing:.03em;
+  color:var(--fog-dim); border:1px solid var(--steel);
+  padding:calc(.3*var(--u)) calc(.9*var(--u)); border-radius:calc(.25*var(--u));
+}
+.ag .tag.work{ color:var(--brass); border-color:var(--brass-dim) }
+#sag.enter .ag{ animation:rise .62s cubic-bezier(.2,.85,.25,1) both; animation-delay:calc(var(--k)*.085s + .15s) }
+
+/* ---------- slide 4 : dimension mapping ---------- */
+#s4{ display:grid; grid-template-rows:auto auto auto 1fr; gap:calc(1.3*var(--u)) }
+.s4-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:calc(3*var(--u)) }
+.s4-head .titles{ display:flex; flex-direction:column; gap:calc(.7*var(--u)) }
+.s4-head h2{ font-size:calc(2.9*var(--u)) }
+
+.dimchips{ display:flex; flex-wrap:wrap; gap:calc(.65*var(--u)); justify-content:flex-start }
+.dimchips button{
+  display:flex; align-items:center; gap:calc(.6*var(--u));
+  font-family:var(--ff-body); font-size:calc(1.26*var(--u)); font-weight:600;
+  padding:calc(.5*var(--u)) calc(1.25*var(--u));
+  color:var(--fog); background:rgba(13,30,46,.7);
+  border:1px solid var(--steel); border-radius:calc(2*var(--u));
+  cursor:pointer; transition:color .25s, border-color .25s, background .25s;
+}
+.dimchips button .en{ font-family:var(--ff-mono); font-size:calc(.86*var(--u)); letter-spacing:.04em; color:var(--steel-2) }
+.dimchips button:hover{ color:var(--mist); border-color:var(--signal-dim) }
+.dimchips button:focus-visible{ outline:1px solid var(--signal); outline-offset:2px }
+.dimchips button[aria-pressed="true"]{ color:var(--abyss); background:var(--signal); border-color:var(--signal) }
+.dimchips button[aria-pressed="true"] .en{ color:rgba(5,11,18,.55) }
+
+.scalebar{ position:relative; block-size:calc(2.4*var(--u)) }
+.scalebar .axisline{
+  position:absolute; inset-block-end:0; left:37%; right:3%; block-size:1px;
+  background:linear-gradient(to right, var(--steel) 0%, var(--signal-dim) 100%);
+}
+.scalebar .cap{
+  position:absolute; inset-block-start:0;
+  font-family:var(--ff-mono); font-size:calc(1*var(--u));
+  letter-spacing:.03em; color:var(--fog-dim);
+}
+#capLo{ left:37% }
+#capHi{ right:3%; color:var(--signal) }
+
+.plot{ position:relative }
+.plot .gl{ position:absolute; inset-block:0; inline-size:1px; background:var(--steel); opacity:.4 }
+.plot .gl.edge{ opacity:.75 }
+.tok{
+  position:absolute; left:37%; top:50%;
+  inline-size:calc(32*var(--u));
+  transform:translate(-100%, -50%);
+  display:flex; align-items:center; gap:calc(.85*var(--u));
+  padding:calc(.5*var(--u)) calc(1.05*var(--u));
+  background:linear-gradient(to left, rgba(21,48,68,.95), rgba(11,26,40,.8));
+  border:1px solid var(--steel);
+  border-inline-start:calc(.26*var(--u)) solid var(--signal-dim);
+  border-radius:calc(.28*var(--u));
+  opacity:0;
+  transition:left .95s cubic-bezier(.3,.86,.25,1), top .95s cubic-bezier(.3,.86,.25,1),
+             opacity .5s ease, border-color .5s ease, background .5s ease, box-shadow .5s ease;
+  will-change:left, top;
+}
+.tok.shown{ opacity:1 }
+.tok .id{ font-family:var(--ff-mono); font-size:calc(.92*var(--u)); letter-spacing:.06em; color:var(--signal) }
+.tok .nm{ flex:1; font-size:calc(1.24*var(--u)); font-weight:600; line-height:1.25; color:#B4C8D8 }
+.tok .sc{
+  font-family:var(--ff-mono); font-size:calc(1.14*var(--u));
+  color:var(--fog-dim); font-variant-numeric:tabular-nums;
+}
+.tok.lead{
+  border-color:var(--steel-2); border-inline-start-color:var(--brass);
+  background:linear-gradient(to left, rgba(43,34,10,.92), rgba(14,24,36,.85));
+  box-shadow:0 calc(.5*var(--u)) calc(2*var(--u)) rgba(2,7,12,.5);
+}
+.tok.lead .id, .tok.lead .sc{ color:var(--brass) }
+.tok.lead .nm{ color:var(--mist) }
+
+/* ---------- slide 2 : timeline ---------- */
+#s2{ display:grid; grid-template-rows:auto 1fr; gap:calc(2*var(--u)) }
+.s2-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:calc(4*var(--u)) }
+.s2-head .titles{ display:flex; flex-direction:column; gap:calc(1.1*var(--u)) }
+
+#panel{
+  flex:0 0 calc(38*var(--u));
+  border:1px solid var(--steel);
+  border-inline-start:2px solid var(--signal);
+  background:linear-gradient(180deg, rgba(17,40,56,.75), rgba(13,30,46,.35));
+  padding:calc(1.5*var(--u)) calc(1.8*var(--u));
+  display:flex; flex-direction:column; gap:calc(.7*var(--u));
+  min-block-size:calc(13*var(--u));
+}
+#panel .pnum{
+  font-family:var(--ff-mono); font-size:calc(1*var(--u));
+  color:var(--signal); letter-spacing:.16em;
+}
+#panel .ptitle{
+  font-family:var(--ff-display); font-weight:700;
+  font-size:calc(2.05*var(--u)); line-height:1.15;
+}
+#panel .pbody{ font-size:calc(1.42*var(--u)); line-height:1.55; color:var(--fog); font-weight:300 }
+#panel.is-next{ border-inline-start-color:var(--brass) }
+#panel.is-next .pnum{ color:var(--brass) }
+
+.timeline{ position:relative; align-self:center; inline-size:100%; padding-block:calc(7.5*var(--u)) calc(1*var(--u)) }
+.axis{
+  position:absolute; inset-inline:0;
+  inset-block-start:calc(7.5*var(--u));
+  block-size:2px; transform-origin:right center;
+  background:var(--brass-dim);
+}
+.axis::after{
+  content:""; position:absolute; inset-block:0; inset-inline-start:0;
+  inline-size:85.714%;
+  background:linear-gradient(to left, var(--signal), var(--signal-dim));
+}
+.steps{ position:relative; display:flex; gap:calc(.6*var(--u)) }
+.step{
+  flex:1 1 0; position:relative;
+  display:flex; flex-direction:column; align-items:center; gap:calc(1.1*var(--u));
+  padding-block-start:calc(1.2*var(--u));
+  background:none; border:0; color:inherit; font:inherit; cursor:pointer;
+  text-align:center;
+}
+.step .dot{
+  position:absolute; inset-block-start:calc(-1.05*var(--u));
+  inline-size:calc(2.1*var(--u)); block-size:calc(2.1*var(--u));
+  border-radius:50%;
+  background:var(--deep); border:2px solid var(--signal);
+  box-shadow:0 0 0 calc(.55*var(--u)) rgba(79,184,201,.09);
+  transition:transform .3s ease, box-shadow .3s ease, background .3s ease;
+}
+.step .dot::after{
+  content:""; position:absolute; inset:calc(.42*var(--u));
+  border-radius:50%; background:var(--signal); opacity:1; transition:opacity .3s;
+}
+.step[data-next] .dot{ border-color:var(--brass); border-style:dashed }
+.step[data-next] .dot::after{ opacity:0 }
+.step .num{
+  font-family:var(--ff-mono); font-size:calc(.98*var(--u));
+  letter-spacing:.14em; color:var(--fog-dim); transition:color .3s;
+  margin-block-start:calc(1.5*var(--u));
+}
+.step .label{
+  font-size:calc(1.34*var(--u)); line-height:1.32; font-weight:600;
+  color:#A6BCCD; transition:color .3s; text-wrap:balance;
+  padding-inline:calc(.4*var(--u));
+}
+.step .detail{ display:none }
+.step:hover .label, .step:focus-visible .label{ color:var(--mist) }
+.step.on .label{ color:var(--mist) }
+.step.on .num{ color:var(--signal) }
+.step.on .dot{ transform:scale(1.32); box-shadow:0 0 0 calc(.9*var(--u)) rgba(79,184,201,.16) }
+.step.on[data-next] .num{ color:var(--brass) }
+.step.on[data-next] .dot{ box-shadow:0 0 0 calc(.9*var(--u)) rgba(211,169,74,.18) }
+.step:focus-visible{ outline:1px solid var(--signal); outline-offset:2px }
+
+/* "we are here" flag, sits between step 6 and step 7 */
+.here{
+  position:absolute; inset-block-start:auto; inset-block-end:100%;
+  margin-block-end:calc(-.575*var(--u));
+  transform:translateX(50%);
+  display:flex; flex-direction:column; align-items:center; gap:calc(.5*var(--u));
+  pointer-events:none;
+}
+.here .flag{
+  display:flex; align-items:baseline; gap:calc(.9*var(--u));
+  padding:calc(.62*var(--u)) calc(1.35*var(--u));
+  background:linear-gradient(180deg, #241D08, #161104);
+  border:1px solid var(--brass); border-radius:calc(.3*var(--u));
+  white-space:nowrap;
+}
+.here .flag strong{
+  font-family:var(--ff-display); font-weight:700;
+  font-size:calc(1.62*var(--u)); color:var(--brass); letter-spacing:.01em;
+}
+.here .flag span{ font-family:var(--ff-mono); font-size:calc(.94*var(--u)); color:var(--brass-dim) }
+.here .stem{ inline-size:1px; block-size:calc(2.9*var(--u)); background:linear-gradient(var(--brass), rgba(211,169,74,.15)) }
+.here .ping{
+  position:relative; inline-size:calc(1.15*var(--u)); block-size:calc(1.15*var(--u));
+  border-radius:50%; background:var(--brass);
+}
+.here .ping::after{
+  content:""; position:absolute; inset:0; border-radius:50%;
+  border:1px solid var(--brass); animation:ping 2.4s ease-out infinite;
+}
+@keyframes ping{ 0%{transform:scale(1); opacity:.9} 100%{transform:scale(4.2); opacity:0} }
+
+#s2.enter .axis{ animation:draw .95s cubic-bezier(.2,.85,.25,1) both }
+#s2.enter .step{ animation:rise .6s cubic-bezier(.2,.85,.25,1) both; animation-delay:calc(var(--k)*.085s + .3s) }
+#s2.enter .here{ animation:fadein .7s ease both; animation-delay:1.1s }
+@keyframes fadein{ from{opacity:0} to{opacity:1} }
+@keyframes drawY{ from{transform:scaleY(0)} to{transform:scaleY(1)} }
+
+/* ---------- slide 3 : bubbles ---------- */
+#s3{ padding:0 }
+#s3 .s3-head{
+  position:absolute; z-index:3;
+  inset-block-start:calc(4.4*var(--u)); inset-inline-start:calc(5.2*var(--u));
+  display:flex; flex-direction:column; gap:calc(.85*var(--u));
+  transition:opacity .7s ease;
+}
+#s3 .s3-head .count{
+  font-family:var(--ff-mono); font-size:calc(1.05*var(--u));
+  color:var(--fog-dim); letter-spacing:.04em;
+}
+#s3.done .s3-head{ opacity:.22 }
+
+.bubbles{ position:absolute; inset:0; z-index:1 }
+.bubble{
+  position:absolute; left:50%; top:30%;
+  inline-size:calc(26*var(--u));
+  margin:0; padding:calc(1.35*var(--u)) calc(1.6*var(--u));
+  border:1px solid var(--steel-2);
+  border-radius:calc(1.15*var(--u)) calc(1.15*var(--u)) calc(.25*var(--u)) calc(1.15*var(--u));
+  background:linear-gradient(165deg, rgba(21,48,68,.94), rgba(11,26,40,.9));
+  box-shadow:0 calc(1.1*var(--u)) calc(3*var(--u)) rgba(2,7,12,.55);
+  opacity:0;
+  transform:translate(-50%, -50%) scale(.42);
+  transition:left 1.15s cubic-bezier(.2,.86,.22,1), top 1.15s cubic-bezier(.2,.86,.22,1),
+             transform 1.15s cubic-bezier(.2,.86,.22,1), opacity .75s ease,
+             filter .75s ease, box-shadow .75s ease;
+  will-change:left, top, transform, opacity;
+}
+.bubble q{ quotes:"„" "”"; font-size:calc(1.46*var(--u)); line-height:1.44; color:var(--mist); display:block }
+.bubble .src{
+  display:flex; align-items:center; gap:calc(.6*var(--u));
+  margin-block-start:calc(.95*var(--u));
+  font-family:var(--ff-mono); font-size:calc(.9*var(--u));
+  letter-spacing:.04em; color:var(--signal);
+}
+.bubble .src::before{ content:""; inline-size:calc(1.5*var(--u)); block-size:1px; background:var(--signal-dim) }
+.bubble.in{ opacity:.5 }
+.bubble.spot{
+  opacity:1;
+  border-color:var(--alert);
+  box-shadow:0 calc(1.6*var(--u)) calc(4.5*var(--u)) rgba(2,7,12,.7), 0 0 0 1px rgba(217,96,60,.25);
+  z-index:2;
+}
+.bubbles.field .bubble{ opacity:.15; filter:blur(.5px); box-shadow:none; border-color:var(--steel) }
+.bubbles.field .bubble.spot{ border-color:var(--steel) }
+
+.closing{
+  position:absolute; inset:0; z-index:2;
+  display:grid; place-items:center;
+  padding-inline:calc(9*var(--u));
+  background:radial-gradient(60% 60% at 50% 50%, rgba(5,11,18,.86) 0%, rgba(5,11,18,.5) 70%, transparent 100%);
+  opacity:0; visibility:hidden;
+  transition:opacity 1s ease, visibility 1s;
+}
+#s3.done .closing{ opacity:1; visibility:visible }
+.closing p{
+  margin:0; text-align:center;
+  font-family:var(--ff-display); font-weight:500;
+  font-size:calc(3.55*var(--u)); line-height:1.34; color:var(--mist);
+  text-wrap:balance; max-inline-size:38ch;
+}
+.closing .v{ color:var(--brass); font-weight:700 }
+.closing .w{ display:inline-block; opacity:0; transform:translateY(calc(.9*var(--u))) }
+#s3.done .closing .w{ animation:rise .7s cubic-bezier(.2,.85,.25,1) both; animation-delay:calc(var(--i)*.14s + .35s) }
+.closing .cap{
+  margin-block-start:calc(2.6*var(--u));
+  font-family:var(--ff-mono); font-size:calc(1.05*var(--u));
+  letter-spacing:.07em; color:var(--fog-dim); text-align:center;
+}
+
+.replay{
+  position:absolute; z-index:4;
+  inset-block-end:calc(4.4*var(--u)); inset-inline-start:calc(5.2*var(--u));
+  display:none; align-items:center; gap:calc(.7*var(--u));
+  padding:calc(.6*var(--u)) calc(1.2*var(--u));
+  font-family:var(--ff-mono); font-size:calc(.96*var(--u)); letter-spacing:.04em;
+  color:var(--fog); background:rgba(13,30,46,.8);
+  border:1px solid var(--steel); border-radius:calc(.3*var(--u));
+  cursor:pointer; transition:color .2s, border-color .2s;
+}
+#s3.done .replay{ display:flex }
+.replay:hover{ color:var(--mist); border-color:var(--signal-dim) }
+.replay:focus-visible{ outline:1px solid var(--signal); outline-offset:2px }
+
+/* ---------- chrome ---------- */
+.chrome{
+  position:absolute; z-index:10; inset-block-end:calc(2*var(--u));
+  inset-inline:calc(5.2*var(--u));
+  display:flex; align-items:center; justify-content:space-between;
+  pointer-events:none;
+}
+.chrome > *{ pointer-events:auto }
+.dots{ display:flex; align-items:center; gap:calc(1.1*var(--u)) }
+.dots button{
+  inline-size:calc(2.6*var(--u)); block-size:calc(.28*var(--u));
+  padding:0; border:0; border-radius:2px; background:var(--steel);
+  cursor:pointer; transition:background .3s, inline-size .3s;
+}
+.dots button[aria-current="true"]{ background:var(--brass); inline-size:calc(5*var(--u)) }
+.dots button:focus-visible{ outline:1px solid var(--signal); outline-offset:3px }
+.pager{
+  font-family:var(--ff-mono); font-size:calc(1.02*var(--u));
+  letter-spacing:.12em; color:var(--fog-dim);
+  font-variant-numeric:tabular-nums;
+}
+.hint{
+  font-family:var(--ff-mono); font-size:calc(.92*var(--u));
+  letter-spacing:.03em; color:var(--steel-2);
+  animation:fadeout .6s ease 7s both;
+}
+@keyframes fadeout{ to{opacity:0} }
+
+/* bearing rail */
+.rail{
+  position:absolute; z-index:2; inset-block-start:0; inset-inline:0;
+  block-size:calc(1.9*var(--u));
+  border-block-end:1px solid rgba(27,53,72,.55);
+  display:flex; align-items:flex-end; justify-content:space-between;
+  padding-inline:calc(5.2*var(--u));
+  font-family:var(--ff-mono); font-size:calc(.78*var(--u));
+  letter-spacing:.1em; color:#213E54;
+  background:repeating-linear-gradient(to right, rgba(27,53,72,.5) 0 1px, transparent 1px calc(1.9*var(--u)));
+  background-size:100% calc(.5*var(--u)); background-repeat:no-repeat;
+  background-position:0 100%;
+}
+
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{ animation-duration:.001s !important; animation-delay:0s !important; transition-duration:.001s !important }
+}
+
+/* ---------- portrait / phone ---------- */
+@media (orientation:portrait) and (max-width:900px){
+  .stage{ width:100vw; height:100vh }
+}
+@container stage (max-aspect-ratio: 4/5){
+  .slides, .chrome{ --u:2.05cqw }
+  .slide{ padding-block:calc(5*var(--u)); padding-inline:calc(4.2*var(--u)); overflow-y:auto }
+  h1{ font-size:calc(5.4*var(--u)) }
+  h2{ font-size:calc(3.9*var(--u)) }
+  .lede{ font-size:calc(2*var(--u)) }
+
+  #s1 h1{ font-size:calc(5.6*var(--u)) }
+  #s1 .titleblock{
+    position:absolute; inset-block-start:auto; inset-block-end:calc(9*var(--u));
+    inset-inline:calc(4.2*var(--u)); max-inline-size:none;
+  }
+  #s1 .sub{ font-size:calc(2.6*var(--u)) }
+
+  /* timeline goes vertical */
+  #s2{ grid-template-rows:auto auto; gap:calc(3*var(--u)) }
+  .s2-head{ flex-direction:column }
+  #panel{ display:none }
+  .timeline{ padding-block:0 }
+  .axis{
+    inset-block:calc(1.6*var(--u)) calc(1.6*var(--u));
+    inset-inline:auto calc(1.05*var(--u));
+    inline-size:2px; block-size:auto;
+    transform-origin:center top;
+    background:linear-gradient(to bottom, var(--signal) 0%, var(--signal-dim) 78%, var(--brass-dim) 79%, var(--brass-dim) 100%);
+  }
+  .axis::after{ display:none }
+  .steps{ flex-direction:column; gap:calc(2.4*var(--u)) }
+  .step{
+    flex:0 0 auto; align-items:flex-start; text-align:right;
+    padding-block-start:0; padding-inline-end:calc(4.4*var(--u));
+    display:grid; grid-template-columns:1fr; gap:calc(.5*var(--u));
+  }
+  .step .dot{
+    inset-block-start:calc(.5*var(--u)); inset-inline-end:calc(-.05*var(--u));
+    inline-size:calc(2.2*var(--u)); block-size:calc(2.2*var(--u));
+  }
+  .step .num{ margin-block-start:0; font-size:calc(1.15*var(--u)) }
+  .step .label{ font-size:calc(2.05*var(--u)); padding-inline:0 }
+  .step .detail{
+    display:block; font-size:calc(1.62*var(--u)); line-height:1.5;
+    color:var(--fog); font-weight:300;
+  }
+  .step.on .dot{ transform:none }
+  #s2.enter .axis{ animation-name:drawY }
+  .here{
+    position:static; inset:auto; margin-block-end:0;
+    transform:none; align-items:flex-end;
+    align-self:stretch; padding-inline-end:calc(1.9*var(--u));
+    flex-direction:row-reverse; gap:calc(1.2*var(--u));
+  }
+  .here .stem{ display:none }
+  .here .flag strong{ font-size:calc(1.95*var(--u)) }
+  .here .flag span{ font-size:calc(1.15*var(--u)) }
+
+  /* bubbles stack */
+  #s3{ padding:0 }
+  #s3 .s3-head{ position:static; padding:calc(5*var(--u)) calc(4.2*var(--u)) calc(2*var(--u)) }
+  .bubbles{
+    position:absolute; inset-block:calc(15*var(--u)) 0; inset-inline:0;
+    display:flex; flex-direction:column; gap:calc(2.2*var(--u));
+    padding:calc(1*var(--u)) calc(4.2*var(--u)) calc(14*var(--u));
+    overflow-y:auto; scroll-behavior:smooth;
+  }
+  .bubble{
+    position:static !important; left:auto !important; top:auto !important;
+    transform:none !important;
+    inline-size:100%; opacity:0;
+    padding:calc(1.9*var(--u)) calc(2.2*var(--u));
+  }
+  .bubble q{ font-size:calc(1.85*var(--u)) }
+  .bubble .src{ font-size:calc(1.15*var(--u)) }
+  .bubble.in{ opacity:.42 }
+  .bubble.spot{ opacity:1 }
+  .bubbles.field .bubble{ filter:none }
+  .closing{ padding-inline:calc(5*var(--u)) }
+  .closing p{ font-size:calc(3.5*var(--u)) }
+  .replay{ inset-block-end:calc(9*var(--u)); inset-inline-start:calc(4.2*var(--u)) }
+  .chrome{ inset-block-end:calc(3*var(--u)); inset-inline:calc(4.2*var(--u)) }
+  .ag{ grid-template-columns:auto 1fr; gap:calc(1.6*var(--u)) }
+  .ag h3{ font-size:calc(2.5*var(--u)) }
+  .ag .tag{ grid-column:1 / -1; justify-self:end; margin-block-start:calc(.6*var(--u)) }
+
+  #s4{ grid-template-rows:auto 1fr }
+  .s4-head{ flex-direction:column; align-items:stretch }
+  .scalebar{ display:none }
+  .plot{ display:flex; flex-direction:column; gap:calc(1.3*var(--u)); overflow-y:auto }
+  .plot .gl{ display:none }
+  .tok{
+    position:static !important; left:auto !important; top:auto !important;
+    transform:none !important; inline-size:100% !important;
+    padding:calc(1.1*var(--u)) calc(1.4*var(--u));
+  }
+  .tok .nm{ font-size:calc(1.72*var(--u)) }
+  .tok .id, .tok .sc{ font-size:calc(1.3*var(--u)) }
+
+  .hint{ display:none }
+  .rail{ display:none }
+}
+</style>
+</head>
+<body>
+<div class="deck" dir="rtl" lang="he">
+<div class="stage">
+<div class="slides">
+
+<!-- ══════════════ SLIDE 1 ══════════════ -->
+<section class="slide active" id="s1" aria-label="שקף פתיחה">
+  <svg class="scene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#071522"/>
+        <stop offset="1" stop-color="#0C2334"/>
+      </linearGradient>
+      <linearGradient id="seaG" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#0A2131"/>
+        <stop offset=".45" stop-color="#061520"/>
+        <stop offset="1" stop-color="#030A10"/>
+      </linearGradient>
+      <radialGradient id="glow" cx=".5" cy=".5" r=".5">
+        <stop offset="0" stop-color="#3E92A6" stop-opacity=".30"/>
+        <stop offset="1" stop-color="#3E92A6" stop-opacity="0"/>
+      </radialGradient>
+
+      <g id="ship" fill="#040A11" stroke="#28596F" stroke-width=".7" stroke-linejoin="round">
+        <path d="M2,28 L30,33 L248,33 L272,33.5 L275,46 L34,47.5 L14,42 Z"/>
+        <path d="M46,33 L48,26.5 L62,26.5 L64,33 Z"/>
+        <path d="M55,26.5 L36,24.4" stroke-width="1.4"/>
+        <path d="M66,29 L72,29 L72,33 L66,33 Z"/>
+        <path d="M74,33 L76,16.5 L122,16.5 L127,23.5 L130,33 Z"/>
+        <path d="M98,16.5 L98,1.2" stroke-width=".9"/>
+        <path d="M90.5,6 L105.5,6" stroke-width=".7"/>
+        <path d="M93,10.4 L103,10.4" stroke-width=".7"/>
+        <ellipse cx="98" cy="13.4" rx="6" ry="3.6"/>
+        <path d="M142,33 L144,20.6 L171,20.6 L175.5,33 Z"/>
+        <path d="M180,20.6 L180,12" stroke-width=".8"/>
+        <path d="M186,33 L188,24.6 L239,24.6 L242,33 Z"/>
+        <path d="M250,33 L250,29 L266,29 L266,33 Z"/>
+      </g>
+    </defs>
+
+    <rect x="0" y="0" width="1600" height="592" fill="url(#sky)"/>
+    <g fill="#1B3548">
+      <circle cx="1290" cy="96" r="1.4"/><circle cx="1418" cy="188" r="1"/>
+      <circle cx="1132" cy="142" r="1.1"/><circle cx="1502" cy="72" r="1.3"/>
+      <circle cx="946" cy="66" r="1"/><circle cx="1364" cy="278" r="1"/>
+    </g>
+    <ellipse cx="420" cy="592" rx="760" ry="104" fill="url(#glow)"/>
+    <rect x="0" y="590" width="1600" height="310" fill="url(#seaG)"/>
+    <path d="M0,590 H1600" stroke="#2C6478" stroke-width="1.1" opacity=".7"/>
+
+    <!-- wave hairlines -->
+    <g stroke="#1D4759" stroke-width="1.2" fill="none" stroke-linecap="round">
+      <g class="wave" style="animation-duration:19s"><path d="M-160,612 h44 m26,0 h70 m30,0 h38 m34,0 h96 m26,0 h52 m30,0 h74 m28,0 h40 m32,0 h88 m26,0 h60 m30,0 h72 m28,0 h46 m30,0 h92 m26,0 h58 m30,0 h68 m28,0 h44 m32,0 h90 m26,0 h54" opacity=".55"/></g>
+      <g class="wave" style="animation-duration:26s"><path d="M-160,646 h72 m34,0 h48 m28,0 h104 m32,0 h62 m30,0 h86 m26,0 h44 m34,0 h96 m28,0 h56 m30,0 h78 m26,0 h50 m32,0 h100 m28,0 h60 m30,0 h72 m26,0 h48 m34,0 h94" opacity=".45"/></g>
+      <g class="wave" style="animation-duration:33s"><path d="M-160,690 h96 m38,0 h64 m32,0 h120 m36,0 h72 m34,0 h98 m30,0 h56 m38,0 h110 m32,0 h68 m34,0 h90 m30,0 h60 m36,0 h116 m32,0 h74" opacity=".35"/></g>
+      <g class="wave" style="animation-duration:41s"><path d="M-160,748 h120 m44,0 h80 m38,0 h140 m42,0 h88 m40,0 h116 m36,0 h68 m44,0 h130 m38,0 h84 m40,0 h108" opacity=".26"/></g>
+      <g class="wave" style="animation-duration:52s"><path d="M-160,824 h150 m52,0 h98 m46,0 h170 m50,0 h108 m48,0 h142 m44,0 h84 m52,0 h158" opacity=".18"/></g>
+    </g>
+
+    <!-- echo-sounder depth scale -->
+    <g stroke="#16324A" stroke-width="1" fill="none">
+      <path d="M1180,712 H1560"/><path d="M1210,772 H1560"/><path d="M1246,846 H1560"/>
+    </g>
+    <g fill="#1E4257" font-family="IBM Plex Mono, monospace" font-size="13" letter-spacing="1.4" text-anchor="end" style="direction:ltr">
+      <text x="1560" y="707">−20 m</text>
+      <text x="1560" y="767">−60 m</text>
+      <text x="1560" y="841">−120 m</text>
+    </g>
+
+    <!-- sonar returns -->
+    <g stroke="#3E92A6" fill="none" stroke-width="1.3">
+      <ellipse class="sonar" cx="371" cy="668" rx="196" ry="36" style="transform-origin:371px 668px"/>
+      <ellipse class="sonar" cx="371" cy="668" rx="196" ry="36" style="transform-origin:371px 668px; animation-delay:1.7s"/>
+      <ellipse class="sonar" cx="371" cy="668" rx="196" ry="36" style="transform-origin:371px 668px; animation-delay:3.4s"/>
+    </g>
+
+    <!-- ships -->
+    <use href="#ship" transform="translate(1150,574) scale(0.62)" opacity=".34"/>
+    <g class="slide-in" style="animation-delay:.15s">
+      <use href="#ship" transform="translate(70,556) scale(2.15)"/>
+    </g>
+
+    <!-- radar emissions from the main mast -->
+    <g stroke="#4FB8C9" fill="none" stroke-width="1.2">
+      <path class="pulse-arc" d="M161,584 A120,120 0 0 1 401,584" style="transform-origin:281px 584px"/>
+      <path class="pulse-arc" d="M161,584 A120,120 0 0 1 401,584" style="transform-origin:281px 584px; animation-delay:1.4s"/>
+      <path class="pulse-arc" d="M161,584 A120,120 0 0 1 401,584" style="transform-origin:281px 584px; animation-delay:2.8s"/>
+    </g>
+  </svg>
+
+  <div class="rail" dir="ltr" aria-hidden="true"><span>000</span><span>090</span><span>180</span><span>270</span><span>360</span></div>
+
+  <div class="titleblock">
+    <p class="eyebrow rise" style="animation-delay:.1s">חיל הים · ענף דיגיטל</p>
+    <h1 class="rise" style="animation-delay:.22s">סדנת ענף דיגיטל</h1>
+    <div class="rule draw" style="animation-delay:.5s"></div>
+    <p class="sub rise" style="animation-delay:.62s">אתגרי הענף, אסטרטגיה ות.ע.</p>
+    <div class="stamp rise" style="animation-delay:.8s">
+      <b>מפגש ראשון</b><span>10.09.2026</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ AGENDA ══════════════ -->
+<section class="slide" id="sag" aria-label="סדר יום">
+  <div class="titles">
+    <p class="eyebrow">מפגש ראשון · 10.09.2026</p>
+    <h2>סדר היום</h2>
+  </div>
+
+  <div class="agenda">
+    <div class="ag" style="--k:0">
+      <span class="n">01</span>
+      <div><h3>מה עשינו בחודשים האחרונים</h3><p>ראיונות גילוי בשטח, איסוף דאטה ומיפוי הכאבים.</p></div>
+      <span class="tag">הצגה</span>
+    </div>
+    <div class="ag" style="--k:1">
+      <span class="n">02</span>
+      <div><h3>עולם הבעיות</h3><p>מה שמענו מהלקוחות, ופירוק כל בעיה למימדים.</p></div>
+      <span class="tag">הצגה</span>
+    </div>
+    <div class="ag" style="--k:2">
+      <span class="n">03</span>
+      <div><h3>שולחנות עגולים</h3><p>עבודה בקבוצות על הכאבים המרכזיים שעלו.</p></div>
+      <span class="tag work">עבודה בקבוצות</span>
+    </div>
+    <div class="ag" style="--k:3">
+      <span class="n">04</span>
+      <div><h3>מקרה בוחן: <span dir="ltr">AI</span></h3><p>איפה <span dir="ltr">AI</span> נותן ערך אמיתי בתהליכי אחזקה וכשירות.</p></div>
+      <span class="tag">הצגה</span>
+    </div>
+    <div class="ag" style="--k:4">
+      <span class="n">05</span>
+      <div><h3>מה הלאה</h3><p>תיעדוף, בעלי משימות ולוחות זמנים למפגש הבא.</p></div>
+      <span class="tag">דיון והחלטות</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ SLIDE 2 ══════════════ -->
+<section class="slide" id="s2" aria-label="מסלול בניית האסטרטגיה">
+  <div class="s2-head">
+    <div class="titles">
+      <p class="eyebrow">מסלול בניית האסטרטגיה</p>
+      <h2>מה עשינו עד היום</h2>
+      <p class="lede">שבעה שלבים, מהפידבק הראשון בשטח ועד רגע התיעדוף.</p>
+    </div>
+    <div id="panel" aria-live="polite">
+      <span class="pnum" dir="ltr">06 / 07</span>
+      <span class="ptitle">מיפוי הכאבים והבעיות</span>
+      <span class="pbody">מפת כאבים לפי פרסונה ולפי מערכת — לוחם, גורם מקצוע מאפיין, גורם מקצוע מבצע, איש מספנה ומפקד בסיס.</span>
+    </div>
+  </div>
+
+  <div class="timeline">
+    <div class="axis"></div>
+
+    <div class="steps">
+      <button class="step on" type="button">
+        <span class="dot"></span><span class="num">01</span>
+        <span class="label">קבלת פידבק מהלקוחות השונים</span>
+        <span class="detail">שלושה ראיונות גילוי בשטח — דרג צוות, דרג מחלקה ודרג ניהולי. פידבק גולמי על FollowIT, CheckIT ו‑GoFix.</span>
+      </button>
+      <button class="step" type="button">
+        <span class="dot"></span><span class="num">02</span>
+        <span class="label">עיבוד הפידבק והבנת הבעיות</span>
+        <span class="detail">זיהוי תמות חוצות‑ראיונות: אקסל מקביל למערכת, ניהול פגי תוקף, ודו״ח המנהלים כמרכז הכובד של הבקרה.</span>
+      </button>
+      <button class="step" type="button">
+        <span class="dot"></span><span class="num">03</span>
+        <span class="label">איסוף דאטה וניתוח הבעיה</span>
+        <span class="detail">תדירויות טיפולים, שעות עבודה, זמני שהייה במספנה ומחירי כלים — לתרגם כאב למספרים ולכסף.</span>
+      </button>
+      <button class="step" type="button">
+        <span class="dot"></span><span class="num">04</span>
+        <span class="label">פירוק כל בעיה למימדים</span>
+        <span class="detail"><span dir="ltr">impact · effort · urgency · frequency</span> — ציון לכל בעיה בכל מימד, כדי שהתיעדוף יהיה מבוסס ולא תחושתי.</span>
+      </button>
+      <button class="step" type="button">
+        <span class="dot"></span><span class="num">05</span>
+        <span class="label">חזרה ללקוחות ל‑<span dir="ltr">follow up</span></span>
+        <span class="detail">אימות ההבנה מול המרואיינים, חידוד ניסוח הכאב וסגירת פערים שנשארו פתוחים מהראיון הראשון.</span>
+      </button>
+      <button class="step" type="button">
+        <span class="dot"></span><span class="num">06</span>
+        <span class="label">מיפוי הכאבים והבעיות</span>
+        <span class="detail">מפת כאבים לפי פרסונה ולפי מערכת — לוחם, גורם מקצוע מאפיין, גורם מקצוע מבצע, איש מספנה ומפקד בסיס.</span>
+      </button>
+      <div class="here">
+        <div class="flag"><strong>אנחנו כאן</strong><span>10.09.2026</span></div>
+        <div class="stem"></div>
+        <div class="ping"></div>
+      </div>
+
+      <button class="step" type="button" data-next>
+        <span class="dot"></span><span class="num">07</span>
+        <span class="label">תיעדוף</span>
+        <span class="detail">השלב הבא — להחליט איפה הכי כואב ומה נותן את האימפקט הגדול ביותר. זו העבודה של הסדנה הזו.</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ SLIDE 3 ══════════════ -->
+<section class="slide" id="s3" aria-label="הבעיות שהועלו">
+  <div class="s3-head">
+    <p class="eyebrow">מה שמענו מהלקוחות</p>
+    <h2>הבעיות</h2>
+    <p class="count">12 פידבקים · 3 ראיונות · 5 פרסונות</p>
+  </div>
+
+  <div class="bubbles" id="bubbles">
+    <figure class="bubble" data-sx="50" data-sy="30" data-rx="14" data-ry="12">
+      <q>אין מערכת מסודרת לטפל באחזקת הכלי</q><div class="src">דרג צוות</div></figure>
+    <figure class="bubble" data-sx="38" data-sy="26" data-rx="64" data-ry="42">
+      <q>לא יודעים מתי הכלי עבר טיפולים לאחרונה</q><div class="src">דרג מחלקה</div></figure>
+    <figure class="bubble" data-sx="60" data-sy="34" data-rx="34" data-ry="76">
+      <q>יש חוסרים בכלים ואנחנו לא יודעים איפה הכלים נמצאים</q><div class="src">גורם מקצוע</div></figure>
+    <figure class="bubble" data-sx="50" data-sy="30" data-rx="80" data-ry="15">
+      <q>הטיפולים לוקחים המון זמן במספנה ואנחנו לא יודעים מתי הם ייצאו — אין לנו חיזוי</q><div class="src">מספנה</div></figure>
+    <figure class="bubble" data-sx="38" data-sy="26" data-rx="20" data-ry="42">
+      <q>אני מנהל טבלת אקסל משלי במקביל למערכת, כדי שיהיה מול העיניים</q><div class="src">דרג מחלקה</div></figure>
+    <figure class="bubble" data-sx="60" data-sy="34" data-rx="56" data-ry="70">
+      <q>לכל פריט יש תוקף — בלי לדעת מה התוקף אני לא יודע אם הוא תקין</q><div class="src">גורם מקצוע</div></figure>
+    <figure class="bubble" data-sx="50" data-sy="30" data-rx="36" data-ry="16">
+      <q>כשמשהו לא בוצע, מוציאים אקסל ומתחילים לחפור למה</q><div class="src">דרג ניהולי</div></figure>
+    <figure class="bubble" data-sx="38" data-sy="26" data-rx="86" data-ry="40">
+      <q>אין גאנט — אני לא זוכר מתי מתקרב טיפול גדול</q><div class="src">דרג מחלקה</div></figure>
+    <figure class="bubble" data-sx="60" data-sy="34" data-rx="12" data-ry="72">
+      <q>בשטח מדפיסים חוברת אחזקה ומסמנים על הדף</q><div class="src">דרג צוות</div></figure>
+    <figure class="bubble" data-sx="50" data-sy="30" data-rx="58" data-ry="11">
+      <q>התאריכים במערכת לא מסונכרנים עם מה שקורה בפועל</q><div class="src">דרג מחלקה</div></figure>
+    <figure class="bubble" data-sx="38" data-sy="26" data-rx="42" data-ry="38">
+      <q>כמה מחלקות מבצעות את אותה הוראה, ואין מי שסוגר את הלופ</q><div class="src">גורם מקצוע</div></figure>
+    <figure class="bubble" data-sx="60" data-sy="34" data-rx="78" data-ry="75">
+      <q>צריך מקום אחד שמרכז את כל הנתונים — לא לקפוץ ממערכת למערכת</q><div class="src">דרג ניהולי</div></figure>
+  </div>
+
+  <div class="closing">
+    <div>
+      <p>
+        <span class="w" style="--i:0">בחודשים האחרונים</span>
+        <span class="w v" style="--i:1">נפגשנו,</span>
+        <span class="w v" style="--i:2">דיברנו,</span>
+        <span class="w v" style="--i:3">שמענו</span>
+        <span class="w v" style="--i:4">וחשבנו</span>
+        <span class="w" style="--i:5">על הבעיות המבצעיות שהועלו</span>
+      </p>
+      <p class="cap w" style="--i:7">ענף דיגיטל · חיל הים · ספטמבר 2026</p>
+    </div>
+  </div>
+
+  <button class="replay" type="button" id="replay">הרץ שוב</button>
+</section>
+
+<!-- ══════════════ SLIDE 4 ══════════════ -->
+<section class="slide" id="s4" aria-label="מיפוי הבעיות לפי מימדים">
+  <div class="s4-head">
+    <div class="titles">
+      <p class="eyebrow">שלב 04 · פירוק הבעיות למימדים</p>
+      <h2>מיפוי הבעיות</h2>
+      <p class="meta">10 בעיות · 5 מימדים · הציונים להמחשה, התיעדוף עצמו ייעשה בסדנה</p>
+    </div>
+  </div>
+
+  <div class="dimchips" id="dimchips" role="group" aria-label="בחירת מימד"></div>
+
+  <div class="scalebar">
+    <span class="cap" id="capLo"></span>
+    <span class="cap" id="capHi"></span>
+    <div class="axisline"></div>
+  </div>
+
+  <div class="plot" id="plot"></div>
+</section>
+
+</div><!-- /slides -->
+
+<div class="chrome">
+  <div class="dots" id="dots" role="tablist" aria-label="ניווט בין שקפים"></div>
+  <span class="hint">רווח או חצים לניווט · F למסך מלא</span>
+  <span class="pager" id="pager" dir="ltr">01 / 03</span>
+</div>
+
+</div><!-- /stage -->
+</div><!-- /deck -->
+
+<script>
+(function(){
+  "use strict";
+
+  var reduce    = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var portraitQ = matchMedia("(orientation:portrait) and (max-width:900px)");
+
+  var slides   = [].slice.call(document.querySelectorAll(".slide"));
+  var pager    = document.getElementById("pager");
+  var stage    = document.querySelector(".stage");
+  var dotsWrap = document.getElementById("dots");
+  var seen     = slides.map(function(_, i){ return i === 0; });
+  var index    = 0;
+
+  var sag = document.getElementById("sag");
+  var s2  = document.getElementById("s2");
+  var s3  = document.getElementById("s3");
+  var s4  = document.getElementById("s4");
+  var AT  = {
+    agenda:  slides.indexOf(sag),
+    timeline:slides.indexOf(s2),
+    problems:slides.indexOf(s3),
+    mapping: slides.indexOf(s4)
+  };
+
+  function pad(v){ return ("0" + v).slice(-2); }
+  pager.textContent = pad(1) + " / " + pad(slides.length);
+
+  /* ─────────── slide dots ─────────── */
+  var dots = slides.map(function(sl, i){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.setAttribute("role", "tab");
+    b.setAttribute("aria-current", i === 0 ? "true" : "false");
+    b.setAttribute("aria-label", "שקף " + (i + 1));
+    b.addEventListener("click", function(){ show(i); });
+    dotsWrap.appendChild(b);
+    return b;
+  });
+
+  /* ─────────── timeline ─────────── */
+  var panel = document.getElementById("panel");
+  var steps = [].slice.call(s2.querySelectorAll(".step"));
+
+  steps.forEach(function(step, i){
+    step.style.setProperty("--k", i);
+    step.addEventListener("click", function(){ selectStep(i); });
+    step.addEventListener("focus", function(){ selectStep(i); });
+  });
+
+  function selectStep(i){
+    steps.forEach(function(st, j){ st.classList.toggle("on", i === j); });
+    var st = steps[i];
+    panel.querySelector(".pnum").textContent  = pad(i + 1) + " / " + pad(steps.length);
+    panel.querySelector(".ptitle").innerHTML  = st.querySelector(".label").innerHTML;
+    panel.querySelector(".pbody").innerHTML   = st.querySelector(".detail").innerHTML;
+    panel.classList.toggle("is-next", st.hasAttribute("data-next"));
+  }
+  selectStep(5);
+
+  /* the flag marks the boundary between the last done step and the next one */
+  document.querySelector(".here").style.insetInlineStart =
+    ((steps.length - 1) / steps.length * 100).toFixed(3) + "%";
+
+  /* ─────────── problems: the bubble reveal ─────────── */
+  var field   = document.getElementById("bubbles");
+  var bubbles = [].slice.call(field.querySelectorAll(".bubble"));
+  var STAGGER = 1150;
+  var t3 = [];
+
+  function clear3(){ t3.forEach(clearTimeout); t3 = []; }
+
+  function place(b, x, y, scale){
+    b.style.left = x + "%";
+    b.style.top  = y + "%";
+    b.style.transform = "translate(-50%, -50%) scale(" + scale + ")";
+  }
+  function toRest(b, scale){
+    place(b, b.dataset.rx, b.dataset.ry, scale);
+  }
+
+  function finish3(){
+    clear3();
+    bubbles.forEach(function(b){
+      b.classList.add("in");
+      b.classList.remove("spot");
+      toRest(b, 0.68);
+    });
+    field.classList.add("field");
+    s3.classList.add("done");
+  }
+
+  function run3(){
+    clear3();
+    s3.classList.remove("done");
+    field.classList.remove("field");
+    bubbles.forEach(function(b){
+      b.classList.remove("in", "spot");
+      place(b, b.dataset.sx, b.dataset.sy, 0.42);
+    });
+    if (reduce) { finish3(); return; }
+    field.scrollTop = 0;
+
+    bubbles.forEach(function(b, i){
+      t3.push(setTimeout(function(){
+        bubbles.forEach(function(x){
+          if (x !== b && x.classList.contains("spot")) {
+            x.classList.remove("spot");
+            toRest(x, 0.72);
+          }
+        });
+        b.classList.add("in", "spot");
+        place(b, b.dataset.sx, b.dataset.sy, 1);
+        if (portraitQ.matches) b.scrollIntoView({ block: "center", behavior: "smooth" });
+      }, 150 + i * STAGGER));
+    });
+    t3.push(setTimeout(finish3, 150 + bubbles.length * STAGGER + 650));
+  }
+
+  document.getElementById("replay").addEventListener("click", run3);
+
+  /* ─────────── mapping: ten problems across five dimensions ─────────── */
+  var DIMS = [
+    { key:"impact", he:"אימפקט",      en:"impact",  lo:"אימפקט שולי",   hi:"אימפקט קריטי" },
+    { key:"effort", he:"מאמץ",        en:"effort",  lo:"מאמץ קל",       hi:"מאמץ כבד" },
+    { key:"tts",    he:"זמן לפתרון",  en:"time",    lo:"פתרון מהיר",    hi:"פתרון ארוך" },
+    { key:"freq",   he:"תדירות",      en:"freq",    lo:"נדיר",          hi:"יום‑יומי" },
+    { key:"ready",  he:"כשירות",      en:"readiness", lo:"ללא פגיעה",   hi:"מסכן כשירות" }
+  ];
+  var PROBS = [
+    { id:"01", nm:"אין מערכת אחזקה",      impact:95, effort:90, tts:88, freq:78, ready:92 },
+    { id:"02", nm:"אין היסטוריית טיפול",  impact:82, effort:45, tts:40, freq:85, ready:74 },
+    { id:"03", nm:"חוסרים ואיתור כלים",   impact:78, effort:62, tts:58, freq:55, ready:80 },
+    { id:"04", nm:"אין חיזוי במספנה",     impact:88, effort:72, tts:75, freq:40, ready:95 },
+    { id:"05", nm:"אקסל מקביל למערכת",    impact:70, effort:35, tts:30, freq:96, ready:45 },
+    { id:"06", nm:"ניהול פגי תוקף",       impact:74, effort:50, tts:45, freq:68, ready:86 },
+    { id:"07", nm:"אין גאנט טיפולים",     impact:58, effort:40, tts:35, freq:62, ready:52 },
+    { id:"08", nm:"חוברת אחזקה מודפסת",   impact:52, effort:55, tts:50, freq:90, ready:38 },
+    { id:"09", nm:"תאריכים לא מסונכרנים", impact:66, effort:28, tts:25, freq:82, ready:60 },
+    { id:"10", nm:"הוראות חוצות‑מחלקות",  impact:60, effort:66, tts:62, freq:44, ready:56 }
+  ];
+  var X0 = 37, XS = 0.60;                 /* score 0..100 -> 37%..97% of the plot */
+  var plot   = document.getElementById("plot");
+  var chipsW = document.getElementById("dimchips");
+  var capLo  = document.getElementById("capLo");
+  var capHi  = document.getElementById("capHi");
+  var dim = 0, t4 = [];
+
+  [0, 25, 50, 75, 100].forEach(function(v, i, arr){
+    var g = document.createElement("div");
+    g.className = "gl" + (i === 0 || i === arr.length - 1 ? " edge" : "");
+    g.style.left = (X0 + v * XS) + "%";
+    plot.appendChild(g);
+  });
+
+  var toks = PROBS.map(function(pr){
+    var el = document.createElement("div");
+    el.className = "tok";
+    el.innerHTML = '<span class="id">' + pr.id + '</span>' +
+                   '<span class="nm"></span>' +
+                   '<span class="sc" dir="ltr"></span>';
+    el.querySelector(".nm").textContent = pr.nm;
+    plot.appendChild(el);
+    return el;
+  });
+
+  var chips = DIMS.map(function(d, i){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.setAttribute("aria-pressed", "false");
+    b.innerHTML = '<span class="he"></span><span class="en" dir="ltr"></span>';
+    b.querySelector(".he").textContent = d.he;
+    b.querySelector(".en").textContent = d.en;
+    b.addEventListener("click", function(){ setDim(i); });
+    chipsW.appendChild(b);
+    return b;
+  });
+
+  function setDim(di){
+    t4.forEach(clearTimeout); t4 = [];
+    dim = di;
+    var d = DIMS[di];
+    chips.forEach(function(c, j){ c.setAttribute("aria-pressed", j === di ? "true" : "false"); });
+    capLo.textContent = d.lo;
+    capHi.textContent = d.hi;
+
+    var order = PROBS.map(function(_, i){ return i; });
+    order.sort(function(a, b){ return PROBS[b][d.key] - PROBS[a][d.key]; });
+
+    order.forEach(function(pi, rank){
+      var el = toks[pi], v = PROBS[pi][d.key];
+      var go = function(){
+        el.style.left = (X0 + v * XS) + "%";
+        el.style.top  = ((rank + 0.5) * (100 / PROBS.length)) + "%";
+        el.style.order = rank;
+        el.classList.toggle("lead", rank < 3);
+        el.classList.add("shown");
+        el.querySelector(".sc").textContent = v;
+      };
+      if (reduce) go(); else t4.push(setTimeout(go, rank * 55));
+    });
+  }
+  setDim(0);
+
+  /* ─────────── navigation ─────────── */
+  function show(i){
+    i = Math.max(0, Math.min(slides.length - 1, i));
+    if (i === index && seen[i]) return;
+    index = i;
+    slides.forEach(function(sl, j){ sl.classList.toggle("active", i === j); });
+    dots.forEach(function(d, j){ d.setAttribute("aria-current", i === j ? "true" : "false"); });
+    pager.textContent = pad(i + 1) + " / " + pad(slides.length);
+
+    if (i !== AT.problems) clear3();
+    if (i === AT.agenda   && !seen[i]) sag.classList.add("enter");
+    if (i === AT.timeline && !seen[i]) s2.classList.add("enter");
+    if (i === AT.problems) { if (seen[i]) finish3(); else run3(); }
+    if (i === AT.mapping)  setDim(seen[i] ? dim : 0);
+
+    seen[i] = true;
+  }
+
+  function next(){
+    /* the problems slide completes its reveal before it hands over */
+    if (index === AT.problems && !s3.classList.contains("done")) { finish3(); return; }
+    /* the mapping slide walks its dimensions before it hands over */
+    if (index === AT.mapping && dim < DIMS.length - 1) { setDim(dim + 1); return; }
+    show(index + 1);
+  }
+  function prev(){
+    if (index === AT.mapping && dim > 0) { setDim(dim - 1); return; }
+    show(index - 1);
+  }
+
+  stage.addEventListener("click", function(e){
+    if (e.target.closest("button")) return;
+    next();
+  });
+
+  var fsOk = !!document.fullscreenEnabled;
+  if (!fsOk) {
+    var hint = document.querySelector(".hint");
+    if (hint) hint.textContent = "רווח או חצים לניווט";
+  }
+
+  document.addEventListener("keydown", function(e){
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key >= "1" && e.key <= String(Math.min(9, slides.length))) {
+      show(parseInt(e.key, 10) - 1); return;
+    }
+    switch (e.key) {
+      case "ArrowLeft": case "ArrowDown": case "PageDown": case " ": case "Enter":
+        e.preventDefault(); next(); break;
+      case "ArrowRight": case "ArrowUp": case "PageUp":
+        e.preventDefault(); prev(); break;
+      case "Home": e.preventDefault(); show(0); break;
+      case "End":  e.preventDefault(); show(slides.length - 1); break;
+      case "f": case "F":
+        if (!fsOk) return;
+        e.preventDefault();
+        try {
+          if (document.fullscreenElement) document.exitFullscreen();
+          else document.documentElement.requestFullscreen();
+        } catch (err) { /* blocked by the host frame */ }
+        break;
+    }
+  });
+})();
+</script>
+</body>
+</html>
